@@ -1,0 +1,48 @@
+<%@ page import="example.demo.DemoInfo" %>
+<% boolean sessionFiles = DemoInfo.usesSessionFiles(application); %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session uploads: <%= sessionFiles ? "after" : "before" %></title>
+<style>
+  :root { --fg: #1d1d1f; --muted: #5f6368; --bg: #fff; --panel: #f4f5f7; --line: #d9dce1;
+          --accent: #1a5fb4; --bad: #b42318; --good: #1e7b34; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg: #e8eaed; --muted: #a0a4aa; --bg: #17181a; --panel: #222427; --line: #3a3d42;
+            --accent: #8ab4f8; --bad: #f28b82; --good: #81c995; }
+  }
+  body { font: 15px/1.5 system-ui, sans-serif; color: var(--fg); background: var(--bg);
+         max-width: 760px; margin: 0 auto; padding: 16px; }
+  nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  nav a { padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px;
+          color: var(--accent); text-decoration: none; }
+  nav a.current { background: var(--panel); color: var(--fg); font-weight: 600; }
+  table { border-collapse: collapse; width: 100%; margin: 8px 0 16px; }
+  th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--line);
+           vertical-align: top; overflow-wrap: anywhere; }
+  th { width: 34%; color: var(--muted); font-weight: 500; }
+  .info { background: var(--panel); border-radius: 6px; font-size: 13px; }
+  .node { font-weight: 700; }
+  form { display: grid; gap: 10px; padding: 12px; border: 1px solid var(--line); border-radius: 6px; }
+  label { display: grid; gap: 4px; }
+  input[type=text] { font: inherit; padding: 6px; }
+  button { justify-self: start; font: inherit; padding: 6px 14px; }
+  .error { color: var(--bad); font-weight: 600; }
+  .ok { color: var(--good); font-weight: 600; }
+  code { overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+<nav>
+  <a href="/before/" class="<%= sessionFiles ? "" : "current" %>">Before: Struts' default request processor</a>
+  <a href="/after/" class="<%= sessionFiles ? "current" : "" %>">After: SessionFileRequestProcessor</a>
+</nav>
+<table class="info">
+  <tr><th>Served by</th><td class="node" id="node"><%= DemoInfo.escape(DemoInfo.node()) %></td></tr>
+  <tr><th>Struts jar</th><td><%= DemoInfo.escape(DemoInfo.strutsJar()) %></td></tr>
+  <tr><th>Commons FileUpload jar</th><td><%= DemoInfo.escape(DemoInfo.fileUploadJar()) %></td></tr>
+  <tr><th>Request processor</th><td><code><%= DemoInfo.escape(DemoInfo.processorClass(application)) %></code></td></tr>
+  <tr><th>Session</th><td><%= DemoInfo.escape(DemoInfo.sessionId(session)) %>, stored in Redis</td></tr>
+</table>

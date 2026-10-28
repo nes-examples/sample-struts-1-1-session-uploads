@@ -1,0 +1,4 @@
+<p style="color: var(--muted); font-size: 13px">The proxy sends each request to the next node in
+turn, so consecutive pages usually come from different nodes.</p>
+</body>
+</html>

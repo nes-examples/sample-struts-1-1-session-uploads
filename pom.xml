@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.herodevs.examples</groupId>
+  <artifactId>sample-struts-1-1-session-uploads</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>war</packaging>
+
+  <name>Struts 1.1 session uploads example</name>
+  <description>Keeps uploaded files on session-scoped Struts 1.1 forms, so they move between cluster nodes with the session.</description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <profiles>
+    <!-- Apache Struts 1.1 from Maven Central. -->
+    <profile>
+      <id>apache</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <struts.version>1.1</struts.version>
+      </properties>
+    </profile>
+
+    <!-- The NES for Apache Struts 1.1 trial. The registry needs a user name and password in
+         settings.xml, but any values work for the trial. -->
+    <profile>
+      <id>nes-trial</id>
+      <properties>
+        <struts.version>1.1.0-struts-1.1.1-trial</struts.version>
+      </properties>
+      <dependencies>
+        <!-- The trial's POM marks Commons FileUpload optional, so nothing brings it in, and every
+             multipart request fails with ClassNotFoundException. 1.5 is the version that POM
+             names, and its own POM brings Commons IO. -->
+        <dependency>
+          <groupId>commons-fileupload</groupId>
+          <artifactId>commons-fileupload</artifactId>
+          <version>1.5</version>
+        </dependency>
+      </dependencies>
+      <repositories>
+        <repository>
+          <id>herodevs-nes-registry</id>
+          <name>HeroDevs NES registry</name>
+          <url>https://registry.nes.herodevs.com/maven</url>
+          <releases>
+            <enabled>true</enabled>
+          </releases>
+          <snapshots>
+            <enabled>false</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
+
+  <dependencies>
+    <dependency>
+      <groupId>struts</groupId>
+      <artifactId>struts</artifactId>
+      <version>${struts.version}</version>
+      <exclusions>
+        <!-- Declared by both POMs, but the jar isn't published. Java 8 includes javax.sql. -->
+        <exclusion>
+          <groupId>javax.sql</groupId>
+          <artifactId>jdbc-stdext</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>3.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>session-uploads</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>3.3.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.4.0</version>
+      </plugin>
+    </plugins>
+  </build>
+</project>

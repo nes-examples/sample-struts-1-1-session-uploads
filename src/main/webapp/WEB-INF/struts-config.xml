@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC
+  "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+  "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+
+  <form-beans>
+    <form-bean name="uploadForm" type="example.demo.UploadForm"/>
+
+    <!-- The same form as a DynaActionForm, for the /dyna mappings that scripts/check.sh uses. -->
+    <form-bean name="dynaUploadForm" type="org.apache.struts.action.DynaActionForm">
+      <form-property name="title" type="java.lang.String"/>
+      <form-property name="note" type="java.lang.String"/>
+      <form-property name="uploadedOn" type="java.lang.String"/>
+      <form-property name="attachment" type="org.apache.struts.upload.FormFile"/>
+    </form-bean>
+  </form-beans>
+
+  <action-mappings>
+    <action path="/start" type="example.demo.StartAction">
+      <forward name="upload" path="/WEB-INF/pages/upload.jsp"/>
+    </action>
+
+    <!-- Both steps share one session-scoped form. -->
+    <action path="/upload" type="example.demo.UploadAction"
+            name="uploadForm" scope="session" validate="false">
+      <forward name="retry" path="/WEB-INF/pages/upload.jsp"/>
+      <forward name="review" path="/WEB-INF/pages/review.jsp"/>
+    </action>
+    <action path="/confirm" type="example.demo.ConfirmAction"
+            name="uploadForm" scope="session" validate="false">
+      <forward name="review" path="/WEB-INF/pages/review.jsp"/>
+      <forward name="done" path="/WEB-INF/pages/done.jsp"/>
+    </action>
+
+    <action path="/dyna/upload" type="example.demo.UploadAction"
+            name="dynaUploadForm" scope="session" validate="false">
+      <forward name="retry" path="/WEB-INF/pages/upload.jsp"/>
+      <forward name="review" path="/WEB-INF/pages/review.jsp"/>
+    </action>
+    <action path="/dyna/confirm" type="example.demo.ConfirmAction"
+            name="dynaUploadForm" scope="session" validate="false">
+      <forward name="review" path="/WEB-INF/pages/review.jsp"/>
+      <forward name="done" path="/WEB-INF/pages/done.jsp"/>
+    </action>
+  </action-mappings>
+
+  <!-- The one line this pattern adds. With the Tiles plug-in, use
+       example.upload.TilesSessionFileRequestProcessor. -->
+  <controller maxFileSize="5M" processorClass="example.upload.SessionFileRequestProcessor"/>
+
+</struts-config>

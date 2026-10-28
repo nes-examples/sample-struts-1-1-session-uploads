@@ -1,0 +1,8 @@
+* text=auto eol=lf
+*.jar binary
+*.war binary
+*.gif binary
+*.png binary
+*.ico binary
+*.cmd text eol=crlf
+*.bat text eol=crlf

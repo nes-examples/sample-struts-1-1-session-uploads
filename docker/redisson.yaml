@@ -1,0 +1,4 @@
+singleServerConfig:
+  address: "redis://redis:6379"
+# Plain Java serialization, as most session replication uses: every attribute must be Serializable.
+codec: !<org.redisson.codec.SerializationCodec> {}

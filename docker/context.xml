@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+  <WatchedResource>WEB-INF/web.xml</WatchedResource>
+  <!--
+    Sessions live in Redis, so either node can serve any request. readMode="REDIS" reads every
+    attribute from Redis instead of a local copy, and updateMode="AFTER_REQUEST" writes every
+    attribute back when the request ends.
+  -->
+  <Manager className="org.redisson.tomcat.RedissonSessionManager"
+           configPath="${catalina.base}/conf/redisson.yaml"
+           readMode="REDIS" updateMode="AFTER_REQUEST"
+           broadcastSessionEvents="false" keyPrefix="session-uploads"/>
+</Context>

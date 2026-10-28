@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Maven settings for the nes-trial profile. The HeroDevs NES registry asks for a user name and
+  password, but any values work for trial versions, so these aren't credentials.
+
+    mvn -s settings.xml -P nes-trial package
+
+  The server id must match the repository id in pom.xml.
+-->
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <servers>
+    <server>
+      <id>herodevs-nes-registry</id>
+      <username>trial</username>
+      <password>trial</password>
+    </server>
+  </servers>
+</settings>
